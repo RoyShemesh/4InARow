@@ -1,0 +1,21 @@
+.board{
+    background-color: lightgray;
+    width:40% !important;
+    display: grid;
+}
+
+.col{
+    border-radius:10px;
+    background-color: darkgray;
+    width:40px;
+    height: 40px;
+}
+.R{
+    background-color: red;
+}
+.B{
+    background-color: blue;
+}
+.N{
+    background-color: darkgray;
+}

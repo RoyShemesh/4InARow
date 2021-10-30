@@ -26,6 +26,39 @@ class Model{
     }
     checkWin(row,line,color){
         console.log(`row:${row} line:${line} ${color}`);
+        let answer=this.checkRow(row,line,color);
+        if(typeof  answer === 'string')
+        {
+            return answer;
+        }
+        answer =this.checkLine(row,line,color);
+        if(typeof  answer === 'string')
+        {
+            return answer;
+        }
+        answer =this.checkLeftSlant(row,line,color);
+        if(typeof  answer === 'string')
+        {
+            return answer;
+        }
+        answer =this.checkRightSlant(row,line,color);
+        if(typeof  answer === 'string')
+        {
+            return answer;
+        }
+        return false;
+        
+    }
+    newGame(){
+        this.#board=[[],[],[],[],[],[],[]];
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 7; j++) {
+            this.#board[i][j]={fill: 'N',row:i,line:j};                      
+            }
+        }
+        return this.#board;
+    }
+    checkRow(row,line,color){
         let count=0;
         for (let i = 0; i < 7; i++) {
             if(i!=0){
@@ -40,9 +73,12 @@ class Model{
             }
         }
         if(count==3)
-        return `${color} win`;
+            return `${color} win`;
         else
-        count=0;
+            return false;
+    }
+    checkLine(row,line,color){
+        let count=0;
         for (let i = 0; i < 7; i++) {
             if(i!=0){
                 if (`${this.#board[i-1][line].fill}`==color&&`${this.#board[i][line].fill}`==color) 
@@ -58,8 +94,10 @@ class Model{
         if(count==3)
             return `${color} win`;
         else
-            count=0;
-        let leftR=row,leftL=line;
+            return false;
+    }
+    checkLeftSlant(row,line,color){
+        let leftR=row,leftL=line,count=0;
         while(leftR!=0&&leftL!=0)
         {
             leftR--;
@@ -80,8 +118,12 @@ class Model{
             }
         }
         if(count==4)
-            return `${color} win`; 
-        leftR=row,leftL=line;
+            return `${color} win`;
+        else
+            return false;
+    }
+    checkRightSlant(row,line,color){
+        let leftR=row,leftL=line,count=0;
         while(leftR<6&&leftL!=0)
         {
             leftR++;
@@ -108,16 +150,6 @@ class Model{
             return `${color} win`;
         return false;
     }
-    newGame(){
-        this.#board=[[],[],[],[],[],[],[]];
-        for (let i = 0; i < 7; i++) {
-            for (let j = 0; j < 7; j++) {
-            this.#board[i][j]={fill: 'N',row:i,line:j};                      
-            }
-        }
-        return this.#board;
-    }
-
 }
 
 class View{
@@ -245,3 +277,93 @@ class Controller{
 
 const con=new Controller(new View(),new Model())
 
+
+
+
+
+
+
+//  checkWin(row,line,color){
+//     console.log(`row:${row} line:${line} ${color}`);
+//     let count=0;
+//     for (let i = 0; i < 7; i++) {
+//         if(i!=0){
+//             if (`${this.#board[row][i-1].fill}`==color&&`${this.#board[row][i].fill}`==color) 
+//             {
+//                 count++;
+//                 if(count==3)
+//                     i=8;
+//             }
+//             else
+//                 count=0;
+//         }
+//     }
+//     if(count==3)
+//         return `${color} win`;
+//     else
+//         count=0;
+//     for (let i = 0; i < 7; i++) {
+//         if(i!=0){
+//             if (`${this.#board[i-1][line].fill}`==color&&`${this.#board[i][line].fill}`==color) 
+//             {
+//                 count++;
+//                 if(count==3)
+//                     i=8;
+//             }   
+//             else
+//             count=0;
+//         }
+//     }
+//     if(count==3)
+//         return `${color} win`;
+//     else
+//         count=0;
+//     let leftR=row,leftL=line;
+//     while(leftR!=0&&leftL!=0)
+//     {
+//         leftR--;
+//         leftL--;
+//     }
+//     for (let i = 0; i < 7; i++) {
+//         if(i!=0&&leftR<7&&leftL<7){
+//             if (`${this.#board[leftR][leftL].fill}`==color/* &&`${this.#board[i][line].fill}`==color */) 
+//             {
+//                 count++;
+//                 if(count==4)
+//                     i=8;
+//             }   
+//             else
+//                 count=0;
+//             leftR++;
+//             leftL++;
+//         }
+//     }
+//     if(count==4)
+//         return `${color} win`; 
+//     leftR=row,leftL=line;
+//     while(leftR<6&&leftL!=0)
+//     {
+//         leftR++;
+//         leftL--;
+//     }   
+//     console.log(leftR,leftL);
+//     for (let i = 0; i < 7; i++) {
+//         if(i!=0&&leftR>=0&&leftL<7){
+//             if (`${this.#board[leftR][leftL].fill}`==color/* &&`${this.#board[i][line].fill}`==color */) 
+//             {
+//                 count++;
+//                 if(count==4)
+//                 i=8;
+//                 console.log(count);
+//                 console.log(leftR,leftL);
+//             }   
+//             else
+//                 count=0;
+//             leftR--;
+//             leftL++;
+//         }
+//     }   
+//     if(count==4)
+//         return `${color} win`;
+//     return false;
+// } 

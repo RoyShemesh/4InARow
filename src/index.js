@@ -4,12 +4,11 @@ class Model{
         this.#board=[[],[],[],[],[],[],[]];
         for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 7; j++) {
-            this.#board[i][j]={fill: 'N',row:i,line:j};                      
+            this.#board[i][j]={fill:'N',row:i,line:j};                      
             }
         }
         console.log(this.#board);
     }
-
     addKey(color,row){
         let line;
         for (let i = 0; i < 7; i++) {
@@ -25,7 +24,6 @@ class Model{
             return  answer
         return this.#board; 
     }
-
     checkWin(row,line,color){
         console.log(`row:${row} line:${line} ${color}`);
         let count=0;
@@ -91,24 +89,35 @@ class Model{
         }   
         console.log(leftR,leftL);
         for (let i = 0; i < 7; i++) {
-            if(i!=0&&leftR>0&&leftL<7){
+            if(i!=0&&leftR>=0&&leftL<7){
                 if (`${this.#board[leftR][leftL].fill}`==color/* &&`${this.#board[i][line].fill}`==color */) 
                 {
                     count++;
                     if(count==4)
-                        i=8;
+                    i=8;
                     console.log(count);
+                    console.log(leftR,leftL);
                 }   
                 else
                     count=0;
                 leftR--;
                 leftL++;
             }
-        }
+        }   
         if(count==4)
             return `${color} win`;
         return false;
     }
+    newGame(){
+        this.#board=[[],[],[],[],[],[],[]];
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 7; j++) {
+            this.#board[i][j]={fill: 'N',row:i,line:j};                      
+            }
+        }
+        return this.#board;
+    }
+
 }
 
 class View{
@@ -180,6 +189,11 @@ class View{
         newBtn.id='rematch';
         grid.append(newBtn);
     }
+    rematch(handleRematch){
+        document.getElementById('rematch').addEventListener('click',(e)=>{
+            handleRematch();
+        })
+    }
     createElement(tagName ,children = [], classes = [], attributes = {},innerText) {
     const el = document.createElement(tagName);
         // Children
@@ -219,11 +233,13 @@ class Controller{
         else
         {
             this.#view.renderWin(newBoard);
-            
+            this.#view.rematch(this.#playAgain)
         }
     }
-    #playAgain(){
-        
+    #playAgain=()=>{
+        let newBoard=this.#model.newGame();
+        this.#view.renderDisplay(newBoard);
+        this.#view.addMove(this.#handleTurn);
     }
 }
 
